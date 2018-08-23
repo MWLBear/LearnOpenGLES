@@ -10,8 +10,8 @@
 
 //顶点结构体
 typedef struct {
-    float position[4];
-    float color[4];
+    float position[4]; //3D位置
+    float color[4];     //颜色
 }CustomVertex;
 
 enum

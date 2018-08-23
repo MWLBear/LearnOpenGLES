@@ -12,9 +12,6 @@
 @implementation GLView
 //着色器
 
-
-
-
 +(Class)layerClass{
     return [CAEAGLLayer class];
 }
@@ -33,7 +30,7 @@
 
 #pragma mark - renderBuffer
 //OpenGL ES 有三大不同buffer :color buffer ,depth buffer ,stecncil buffer
-//renferbuffer用于展示的窗口
+//renferbuffer可以理解为用于展示的窗口
 -(void)setupRenderBuffer{
     
     if (_renderbuffer) {
@@ -41,10 +38,29 @@
         _renderbuffer = 0;
     }
     //生成renderBuffer
+    /*
+     glGenRenderbuffers 用于生成 renderbuffer，并分配 id
+     
+     void glGenRenderbuffers (GLsizei n, GLuint* renderbuffers)
+     n：表示申请生成 renderbuffer 的个数。
+     renderbuffers：返回分配给 renderbuffer 的 id。
+     
+     */
     glGenRenderbuffers(1, &_renderbuffer);
-    //绑定renderBuffer
+    
+    //绑定renderBuffer:将制定id的buffer绑定为当前的buffer
+    /*
+     void glBindRenderbuffer (GLenum target, GLuint renderbuffer)
+     target：表示当前 renderbuffer，必须是 GL_RENDERBUFFER。
+     renderbuffer：某个 renderbuffer 对应的 id（比如使用 glGenRenderbuffers 生成的 id）
+     */
+    
     glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
+    
     //GL_RENDERBUFFER 内容存储到 CAEAGLayer上
+    
+    
+    //renderbufferStorage 用于将 GL_RENDERBUFFER 的内容存储到实现 EAGLDrawable 协议的 CAEAGLLayer
     [_context renderbufferStorage:GL_RENDERBUFFER fromDrawable:_eagLyer];
 }
 
@@ -60,16 +76,28 @@
  attachment：指定 renderbuffer 被装配到那个装配点上，其值是 GL_COLOR_ATTACHMENT0，GL_DEPTH_ATTACHMENT，GL_STENCIL_ATTACHMENT 中的一个，分别对应 color，depth 和 stencil 三大 buffer。
  renderbuffertarget：表示当前 renderbuffer，必须是 GL_RENDERBUFFER。
  renderbuffer：某个 renderbuffer 对应的 id，表示需要装配的 renderbuffer。
- 
  */
+
 -(void)setupFrameBuffer{
+    //释放旧的的framebuffer
     if (_framebuffer) {
         glDeleteFramebuffers(1, &_framebuffer);
         _framebuffer = 0;
     }
+    //framebuffer == 画布
     glGenFramebuffers(1, &_framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+    // framebuffer 不对渲染的内容做存储, 所以这一步是将 framebuffer 绑定到 renderbuffer ( 渲染的结果就存在 renderbuffer )
+    //是的framebuffer能够索引到对应的渲染内容
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _renderbuffer);
+    /*
+     void glFramebufferRenderbuffer (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
+     target：表示当前 framebuffer，必须是 GL_FRAMEBUFFER。
+     attachment：指定 renderbuffer 被装配到那个装配点上，其值是 GL_COLOR_ATTACHMENT0，GL_DEPTH_ATTACHMENT，GL_STENCIL_ATTACHMENT 中的一个，分别对应 color，depth 和 stencil 三大 buffer。
+     renderbuffertarget：表示当前 renderbuffer，必须是 GL_RENDERBUFFER。
+     renderbuffer：某个 renderbuffer 对应的 id，表示需要装配的 renderbuffer。
+     */
+    
 }
 
 //检查framebuffer的创建情况
@@ -103,6 +131,7 @@
     *error = errorString?[NSError errorWithDomain:@"com.lz.nb" code:status userInfo:@{@"errorMessage":errorString}]:nil;
     return reslut;
 }
+
 #pragma mark - VBO
 //顶点缓存对象(VBO:Vertex Buffer Objects)
 /*
@@ -153,8 +182,15 @@
     int shaderStringLength = (int)[shaderSting length];
 
     //创建着色器对象
+    /*
+     GLuint GL_APIENTRY glCreateShader (GLenum type);
+     type：着色器类型，可选值有 GL_VERTEX_SHADER 和 GL_FRAGMENT_SHADER。
+     */
+    
     GLuint shaderHandle = glCreateShader(shaderType);
     //把着色器源码附加到着色器上面
+    /*
+     */
     glShaderSource(shaderHandle, 1, &shaderStringUTF8, &shaderStringLength);
     //编译着色器
     glCompileShader(shaderHandle);
@@ -179,7 +215,9 @@
     GLuint vertexShader = [self compileShader:@"OpenGLESDemo.vsh" withType:GL_VERTEX_SHADER];
     GLuint fragmentShader = [self compileShader:@"OpenGLESDmeo.fsh" withType:GL_FRAGMENT_SHADER];
    
+    //创建着色器对象
     GLuint programHandle = glCreateProgram();
+    
     //将编译好的着色器附加到着色器程序上
     glAttachShader(programHandle, vertexShader);
     glAttachShader(programHandle, fragmentShader);
