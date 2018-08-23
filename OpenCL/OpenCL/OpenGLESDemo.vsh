@@ -10,3 +10,8 @@ void main(void) {
 }
 
 
+
+vec4 myVec4 = vec4(1.0);
+
+vec3 myVec3 = vec3(0.0,1.0,2.0);
+vec3 temp = myVec3.xyz;

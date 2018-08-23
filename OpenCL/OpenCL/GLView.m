@@ -266,6 +266,16 @@
     glVertexAttribPointer(glViewAttributes[ATTRIBUTE_POSITION], 4, GL_FLOAT, GL_FALSE,sizeof(CustomVertex), 0);
     glVertexAttribPointer(glViewAttributes[ATTRIBUTE_COLOR], 4, GL_FLOAT, GL_FALSE, sizeof(CustomVertex), (GLvoid *)(sizeof(float) * 4));
     
+    /*
+     我们使用一个顶点缓存对象将顶点数据初始化至缓存中，建立了一个顶点和一个片段着色器，并告诉了 OpenGL ES 如何把顶点数据链接到顶点着色器的顶点属性上。
+     
+     要想渲染我们想要的图形，OpenGL ES 提供了 glDrawArrays 函数，它使用当前激活的着色器，之前定义的顶点属性配置，以及VBO的顶点数据来渲染图元。它的原型如下：
+     
+     void GL_APIENTRY glDrawArrays (GLenum mode, GLint first, GLsizei count);
+     mode：指定渲染的 OpenGL ES 图元的类型。这里渲染的是一个三角形，所以传递 GL_TRIANGLES 给它。
+     first：指定了顶点数据的起始索引，这里为 0。
+     count：指定顶点个数，这里为 3。
+     */
     glDrawArrays(GL_TRIANGLES, 0, 3);
     //做完所有的绘制操作后,呈现在屏幕上
     [_context presentRenderbuffer:GL_RENDERBUFFER];
