@@ -263,6 +263,16 @@
     // 使用VBO时，最后一个参数0为要获取参数在GL_ARRAY_BUFFER中的偏移量
     
     // glVertexAttribPointer 函数告诉 OpenGL ES 该如何解析顶点数据 （应用到逐个顶点属性上）
+    /*
+     void GL_APIENTRY glVertexAttribPointer (GLuint indx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+     indx：指定要配置的顶点属性。
+     size：指定顶点属性的大小（这里不管是位置还是色值，都是四元向量，所以是4）。
+     type：指定属性的类型，这里是 GL_FLOAT （GLSL中 vec* 都是由浮点数值组成的）。
+     normalized：指定是否希望数据被标准化（Normalize）。如果设置为 GL_TRUE，所有数据都会被映射到0（对于有符号型 signed 数据是 -1）到 1 之间。我们把它设置为GL_FALSE。
+     stride：步长（Stride），它告诉 OpenGL ES 连续的顶点数据组之间的间隔。如上图所示，每个顶点数据大小都是 32 字节（sizeof(CustomVertex)），即下组顶点数据数据在一个 CustomVertex 之后，所以我们把步长设置为 sizeof(CustomVertex)。
+     ptr：表示该属性在缓存中起始位置的偏移量（Offset）。如图，位置属性的偏移量是 0，而对于色值属性，它是紧挨着位置属性之后，所以它相对起始位置的偏移量，应该是一个位置属性的大小，即 16（sizeof(float) 4）。另外，参数类型是 `GLvoid`，所以需要进行这个奇怪的强制类型转换。
+     */
+    
     glVertexAttribPointer(glViewAttributes[ATTRIBUTE_POSITION], 4, GL_FLOAT, GL_FALSE,sizeof(CustomVertex), 0);
     glVertexAttribPointer(glViewAttributes[ATTRIBUTE_COLOR], 4, GL_FLOAT, GL_FALSE, sizeof(CustomVertex), (GLvoid *)(sizeof(float) * 4));
     
