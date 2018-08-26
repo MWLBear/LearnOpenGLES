@@ -89,6 +89,7 @@
     [_contex renderbufferStorage:GL_RENDERBUFFER fromDrawable:_eaglayer];
 
     glGenFramebuffers(1, &_frameBuffer);
+#warning
     //这里的函数写错了 一直运行的不对.
     //设置当前的framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
