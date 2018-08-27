@@ -29,6 +29,7 @@
 		288A8EC4212EB87600B986B2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		288A8ECB212EC22F00B986B2 /* learnView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = learnView.h; sourceTree = "<group>"; };
 		288A8ECC212EC22F00B986B2 /* learnView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = learnView.m; sourceTree = "<group>"; };
+		28EE22E4213134620023F469 /* abd.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = abd.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +62,7 @@
 		288A8EB4212EB86E00B986B2 /* demo2 */ = {
 			isa = PBXGroup;
 			children = (
+				28EE22E4213134620023F469 /* abd.jpeg */,
 				288A8EB5212EB87100B986B2 /* AppDelegate.h */,
 				288A8EB6212EB87200B986B2 /* AppDelegate.m */,
 				288A8EB8212EB87300B986B2 /* ViewController.h */,
